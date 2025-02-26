@@ -23,6 +23,12 @@ public class ProductDaoImpl implements ProductDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
+    public List<Product> getProducts() {
+        String sql = "select * from product where product_id ";
+
+        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Product.class));
+    }
+
     @Override
     public Product getProductById(Integer productId) {
         String sql = "select * from product where product_id = :productId";
