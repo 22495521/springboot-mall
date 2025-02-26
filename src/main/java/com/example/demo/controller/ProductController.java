@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.constant.ProductCategory;
 import com.example.demo.dto.ProductRequest;
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
@@ -20,10 +21,14 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    @GetMapping("/products")
-    public ResponseEntity<List<Product>> getProducts() {
 
-        List<Product> produstList = productService.getProducts();
+    @GetMapping("/products")
+    public ResponseEntity<List<Product>> getProducts(
+            @RequestParam(required = false) ProductCategory category,
+            @RequestParam(required = false) String search
+    ) {
+
+        List<Product> produstList = productService.getProducts(category, search);
 
         return ResponseEntity.status(HttpStatus.OK).body(produstList);
     }

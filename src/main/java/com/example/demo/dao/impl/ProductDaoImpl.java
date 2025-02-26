@@ -1,5 +1,6 @@
 package com.example.demo.dao.impl;
 
+import com.example.demo.constant.ProductCategory;
 import com.example.demo.dao.ProductDao;
 import com.example.demo.dto.ProductRequest;
 import com.example.demo.model.Product;
@@ -23,10 +24,22 @@ public class ProductDaoImpl implements ProductDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    public List<Product> getProducts() {
-        String sql = "select * from product where product_id ";
+    public List<Product> getProducts(ProductCategory category, String search) {
+        String sql = "select * from product WHERE 1=1";
 
-        return jdbcTemplate.query(sql, new BeanPropertyRowMapper<>(Product.class));
+        Map<String, Object> map = new HashMap<>();
+
+        if (category != null) {
+            sql += " AND category = :category";
+            map.put("category", category.name());
+        }
+
+        if (search != null) {
+            sql += " AND product_name LIKE :search";
+            map.put("search", '%' + search + '%');
+        }
+
+        return namedParameterJdbcTemplate.query(sql, map, new BeanPropertyRowMapper<>(Product.class));
     }
 
     @Override
