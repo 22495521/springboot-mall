@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.constant.ProductCategory;
+import com.example.demo.dto.ProductQueryParams;
 import com.example.demo.dto.ProductRequest;
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
@@ -28,7 +29,12 @@ public class ProductController {
             @RequestParam(required = false) String search
     ) {
 
-        List<Product> produstList = productService.getProducts(category, search);
+        ProductQueryParams productQueryParams = new ProductQueryParams();
+        productQueryParams.setCategory(category);
+        productQueryParams.setSearch(search);
+
+
+        List<Product> produstList = productService.getProducts(productQueryParams);
 
         return ResponseEntity.status(HttpStatus.OK).body(produstList);
     }
