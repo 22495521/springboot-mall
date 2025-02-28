@@ -1,7 +1,6 @@
 package com.example.demo.controller;
 
 import com.example.demo.constant.ProductCategory;
-import com.example.demo.dao.ProductDao;
 import com.example.demo.dto.ProductQueryParams;
 import com.example.demo.dto.ProductRequest;
 import com.example.demo.model.Product;
@@ -10,7 +9,6 @@ import com.example.demo.util.Page;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.Null;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
