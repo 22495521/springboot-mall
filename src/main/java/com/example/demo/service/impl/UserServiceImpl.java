@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.dao.UserDao;
+import com.example.demo.dto.UserLoginRequest;
 import com.example.demo.dto.UserRegisterRequest;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.module.ResolutionException;
+import java.util.Objects;
 
 @Component
 public class UserServiceImpl implements UserService {
@@ -37,5 +39,23 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUserById(Integer userId) {
         return userDao.getUserById(userId);
+    }
+
+    @Override
+    public User login(UserLoginRequest userLoginRequest) {
+
+        User user = userDao.getUserByEmail(userLoginRequest.getEmail());
+
+        if (user == null) {
+            logger.warn("該 email {} 尚未註冊", userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        if(!Objects.equals(user.getPassword(), userLoginRequest.getPassword())){
+            logger.warn("email {} 的密碼不正確", userLoginRequest.getEmail());
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST);
+        }
+
+        return user;
     }
 }
